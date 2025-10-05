@@ -49,7 +49,8 @@ export const DownloadSection = () => {
                       <div>Size: ~25MB • Includes run.sh, agent, and executor</div>
                     </div>
                     <a
-                      href="/downloads/AI_Tech_Repairer_Linux.zip"
+                      href="https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/AI_Tech_Repairer_Agent_Linux.zip
+"
                       download
                     >
                       <Button variant="default" className="bg-teal-600 hover:bg-teal-700 text-white shrink-0">
