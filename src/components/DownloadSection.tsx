@@ -86,7 +86,8 @@ export const DownloadSection = () => {
                       <div>Size: ~28MB • Portable EXE, no admin rights needed</div>
                     </div>
                     <a
-                      href="/downloads/AI_Tech_Repairer_Windows.zip"
+                      href="https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/TechFixAgent.zip
+"
                       download
                     >
                       <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white shrink-0">
