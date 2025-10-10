@@ -115,7 +115,7 @@ export const DownloadSection = () => {
 
             <div className="mt-6 p-4 bg-yellow-50/50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
-                💡 After payment, we’ll email your service token within minutes.
+                💡 No payment, we’ll email your service token within minutes.
               </p>
             </div>
           </div>
