@@ -70,7 +70,7 @@ export const Hero = () => {
                 onClick={handleStartSession}
                 className="px-8 py-6 text-lg"
               >
-                Start $5 Repair Session
+                Start free Repair Session
               </Button>
               <p className="text-sm text-white/60 mt-3">
                 💳 Pay securely via Skrill • 🔐 No login needed • 📨 We'll email your service token within minutes
