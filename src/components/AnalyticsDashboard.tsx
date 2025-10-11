@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { TrendingUp, Zap, AlertCircle, Download, Users, Clock } from 'lucide-react';
 
 const AnalyticsDashboard = () => {
-  const [analytics, setAnalytics] = useState(null);
+  const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(7);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAnalytics();
@@ -14,8 +14,12 @@ const AnalyticsDashboard = () => {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
+      
+      // URL encode the API key to handle special characters (+, =)
+      const apiKey = encodeURIComponent('6G4xjZrP7IebKXnVvNQwphH0VvQdXqv9nTjKFXLae+M=');
+      
       const response = await fetch(
-        `https://techfixai-backend.onrender.com/analytics?key=6G4xjZrP7IebKXnVvNQwphH0VvQdXqv9nTjKFXLae+M=&days=${days}`
+        `https://techfixai-backend.onrender.com/analytics?key=${apiKey}&days=${days}`
       );
       
       if (!response.ok) throw new Error('Failed to fetch analytics');
@@ -23,7 +27,7 @@ const AnalyticsDashboard = () => {
       const data = await response.json();
       setAnalytics(data);
       setError(null);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
@@ -49,7 +53,7 @@ const AnalyticsDashboard = () => {
     );
   }
 
-  const StatCard = ({ icon: Icon, title, value, subtitle, color }) => (
+  const StatCard = ({ icon: Icon, title, value, subtitle, color }: any) => (
     <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:border-white/40 transition-all">
       <div className="flex items-center justify-between mb-4">
         <Icon className={`w-8 h-8 ${color}`} />
@@ -147,7 +151,7 @@ const AnalyticsDashboard = () => {
             </h2>
             
             <div className="space-y-3">
-              {analytics.recent_errors.map((err, idx) => (
+              {analytics.recent_errors.map((err: any, idx: number) => (
                 <div
                   key={idx}
                   className="bg-red-500/10 border border-red-500/30 rounded-lg p-4"
