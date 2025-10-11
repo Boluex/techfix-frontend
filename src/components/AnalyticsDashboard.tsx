@@ -15,7 +15,7 @@ const AnalyticsDashboard = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://techfixai-backend.onrender.com/analytics?key=your-secret-key&days=${days}`
+        `https://techfixai-backend.onrender.com/analytics?key=6G4xjZrP7IebKXnVvNQwphH0VvQdXqv9nTjKFXLae+M=&days=${days}`
       );
       
       if (!response.ok) throw new Error('Failed to fetch analytics');
