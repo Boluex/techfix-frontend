@@ -99,7 +99,8 @@ export const DownloadSection = () => {
                     </div>
                     <a 
                       href={LINUX_URL}
-                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
                       onClick={() => {
                         setDownloading("linux");
                         trackDownload("linux");
@@ -146,19 +147,28 @@ export const DownloadSection = () => {
                       </div>
                       <div>Size: ~8MB • Portable EXE, no admin rights needed</div>
                     </div>
-                    <Button
-                      onClick={() => handleDownload("windows", WINDOWS_URL)}
-                      disabled={downloading === "windows"}
-                      variant="default"
-                      className={`shrink-0 transition-all ${
-                        downloading === "windows"
-                          ? "bg-green-600 hover:bg-green-700"
-                          : "bg-blue-600 hover:bg-blue-700"
-                      } text-white`}
+                    <a 
+                      href={WINDOWS_URL}
+                      download
+                      onClick={() => {
+                        setDownloading("windows");
+                        trackDownload("windows");
+                        setTimeout(() => setDownloading(null), 2000);
+                      }}
                     >
-                      <Download className="w-4 h-4 mr-2" />
-                      {downloading === "windows" ? "Downloading..." : "Download for Windows"}
-                    </Button>
+                      <Button
+                        disabled={downloading === "windows"}
+                        variant="default"
+                        className={`shrink-0 transition-all ${
+                          downloading === "windows"
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-blue-600 hover:bg-blue-700"
+                        } text-white`}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        {downloading === "windows" ? "Downloading..." : "Download for Windows"}
+                      </Button>
+                    </a>
                   </div>
                 </CardContent>
               </Card>
@@ -203,8 +213,6 @@ export const DownloadSection = () => {
     </section>
   );
 };
-
-
 
 
 
