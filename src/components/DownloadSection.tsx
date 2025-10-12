@@ -31,15 +31,23 @@ export const DownloadSection = () => {
     }
   };
 
-  // Handle download - open GitHub release URL directly
+  // Handle download - use anchor tag with download attribute
   const handleDownload = async (platform: string, url: string) => {
     setDownloading(platform);
     
-    // Track the download event (don't await - don't block)
+    // Track the download event
     trackDownload(platform);
     
-    // Open URL in new tab - GitHub will handle the download
-    window.location.href = url;
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', ''); // Hint to browser this is a download
+    link.setAttribute('target', '_blank'); // Open in new tab as fallback
+    link.style.display = 'none';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     
     // Reset downloading state after 2 seconds
     setTimeout(() => setDownloading(null), 2000);
@@ -89,19 +97,28 @@ export const DownloadSection = () => {
                       </div>
                       <div>Size: ~25MB • Includes run.sh, agent, and executor</div>
                     </div>
-                    <Button
-                      onClick={() => handleDownload("linux", LINUX_URL)}
-                      disabled={downloading === "linux"}
-                      variant="default"
-                      className={`shrink-0 transition-all ${
-                        downloading === "linux"
-                          ? "bg-green-600 hover:bg-green-700"
-                          : "bg-teal-600 hover:bg-teal-700"
-                      } text-white`}
+                    <a 
+                      href={LINUX_URL}
+                      download
+                      onClick={() => {
+                        setDownloading("linux");
+                        trackDownload("linux");
+                        setTimeout(() => setDownloading(null), 2000);
+                      }}
                     >
-                      <Download className="w-4 h-4 mr-2" />
-                      {downloading === "linux" ? "Downloading..." : "Download for Linux"}
-                    </Button>
+                      <Button
+                        disabled={downloading === "linux"}
+                        variant="default"
+                        className={`shrink-0 transition-all ${
+                          downloading === "linux"
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-teal-600 hover:bg-teal-700"
+                        } text-white`}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        {downloading === "linux" ? "Downloading..." : "Download for Linux"}
+                      </Button>
+                    </a>
                   </div>
                 </CardContent>
               </Card>
@@ -186,7 +203,6 @@ export const DownloadSection = () => {
     </section>
   );
 };
-
 
 
 
