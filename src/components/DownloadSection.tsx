@@ -9,7 +9,7 @@ export const DownloadSection = () => {
 
   // GitHub release download URLs
   const LINUX_URL =
-    "https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/AI_Tech_Repairer_Agent_Linux.zip";
+    "https://github.com/Boluex/techfix-frontend/releases/download/1.0/TechFix.Ai.-.linux.zip";
   const WINDOWS_URL =
     "https://github.com/Boluex/techfix-frontend/releases/download/1.0/TechFix.Ai.-.linux.zip";
 
