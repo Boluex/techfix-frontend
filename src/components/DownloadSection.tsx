@@ -11,7 +11,7 @@ export const DownloadSection = () => {
   const LINUX_URL =
     "https://github.com/Boluex/techfix-frontend/releases/download/1.0/TechFIx.Agent.zip";
   const WINDOWS_URL =
-    "https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/TechFixAgent.zip";
+    "https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/TechFix_Agent_Windows.zip";
 
   // Track download analytics
   const trackDownload = async (platform: string) => {
