@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/hero-tech-repair.jpg";
-import { Monitor, Zap, Shield, Clock, Copy, Check, X } from "lucide-react";
+import { Monitor, Zap, Shield, Clock, Copy, Check, X, Bell } from "lucide-react";
 
 export const Hero = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +11,33 @@ export const Hero = () => {
   const [expiresAt, setExpiresAt] = useState("");
   const [copied, setCopied] = useState(false);
   const [showTokenModal, setShowTokenModal] = useState(false);
+  
+  // 🔔 Notification state
+  const [notification, setNotification] = useState<{ id: string; title: string; message: string } | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
 
-  // Hide the actual API endpoint
-  // const API_ENDPOINT = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
-  const API_ENDPOINT = "http://127.0.0.1:8000";
+  const API_ENDPOINT = import.meta.env.VITE_API_URL;
+  // const API_ENDPOINT = "http://127.0.0.1:8000";
+
+  // 🔔 Fetch notification on mount
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const response = await fetch(`${API_ENDPOINT}/notifications`);
+        const data = await response.json();
+        
+        if (data.id && !localStorage.getItem(`notification_seen_${data.id}`)) {
+          setNotification(data);
+          setShowNotification(true);
+        }
+      } catch (error) {
+        console.error("Failed to fetch notification:", error);
+      }
+    };
+
+    fetchNotification();
+  }, []);
+
   const handleStartSession = async () => {
     if (!email || !email.includes("@")) {
       alert("⚠️ Please enter a valid email address.");
@@ -23,8 +46,6 @@ export const Hero = () => {
 
     try {
       setIsLoading(true);
-      
-      // Use a proxy or environment variable to hide the actual endpoint
       const response = await fetch(`${API_ENDPOINT}/generate-token`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -59,11 +80,20 @@ export const Hero = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const closeModal = () => {
+  const closeTokenModal = () => {
     setShowTokenModal(false);
     setToken("");
     setExpiresAt("");
     setCopied(false);
+  };
+
+  // 🔔 Handle notification close
+  const closeNotification = () => {
+    if (notification) {
+      localStorage.setItem(`notification_seen_${notification.id}`, "true");
+    }
+    setShowNotification(false);
+    setNotification(null);
   };
 
   return (
@@ -122,7 +152,7 @@ export const Hero = () => {
               </div>
             </div>
 
-            {/* Email input + button - FIXED VISIBILITY */}
+            {/* Email input + button */}
             <div className="tech-card rounded-2xl p-6 backdrop-blur-sm border border-white/10">
               <div className="flex flex-col sm:flex-row items-center gap-3">
                 <Input
@@ -164,76 +194,41 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* TOKEN MODAL - Fixed positioning with proper overlay */}
+      {/* TOKEN MODAL */}
       {showTokenModal && (
         <>
-          {/* Modal Overlay - Click to close */}
-          <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
-            onClick={closeModal}
-          ></div>
-
-          {/* Modal Content - Centered */}
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50" onClick={closeTokenModal}></div>
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <div 
-              className="relative max-w-md w-full pointer-events-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="relative max-w-md w-full pointer-events-auto" onClick={(e) => e.stopPropagation()}>
               <div className="tech-card rounded-2xl p-8 backdrop-blur-md border border-accent/30 shadow-2xl bg-gradient-to-br from-primary/90 to-primary-dark/90">
-                {/* Close Button - Fixed position */}
-                <button
-                  onClick={closeModal}
-                  className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors group"
-                  aria-label="Close modal"
-                >
+                <button onClick={closeTokenModal} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors group" aria-label="Close modal">
                   <X className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" />
                 </button>
 
-                {/* Success Icon */}
                 <div className="flex justify-center mb-6">
                   <div className="w-16 h-16 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center animate-pulse">
                     <Check className="w-8 h-8 text-accent" />
                   </div>
                 </div>
 
-                {/* Title */}
-                <h2 className="text-3xl font-bold text-white text-center mb-2">
-                  Token Generated!
-                </h2>
-                <p className="text-white/70 text-center mb-6">
-                  Your repair session is ready to begin
-                </p>
+                <h2 className="text-3xl font-bold text-white text-center mb-2">Token Generated!</h2>
+                <p className="text-white/70 text-center mb-6">Your repair session is ready to begin</p>
 
-                {/* Token Display */}
                 <div className="bg-white/5 rounded-xl p-6 mb-6 border border-accent/20">
                   <p className="text-white/60 text-sm mb-3 font-medium">Service Token</p>
                   <div className="flex items-center justify-between gap-3 bg-gradient-to-r from-accent/10 to-primary-glow/10 rounded-lg p-4 border border-accent/20">
-                    <code className="text-2xl font-mono font-bold text-accent tracking-widest">
-                      {token}
-                    </code>
-                    <button
-                      onClick={copyToClipboard}
-                      className="p-2 hover:bg-accent/20 rounded-lg transition-all flex-shrink-0"
-                      title="Copy token"
-                    >
-                      {copied ? (
-                        <Check className="w-5 h-5 text-green-400" />
-                      ) : (
-                        <Copy className="w-5 h-5 text-accent" />
-                      )}
+                    <code className="text-2xl font-mono font-bold text-accent tracking-widest">{token}</code>
+                    <button onClick={copyToClipboard} className="p-2 hover:bg-accent/20 rounded-lg transition-all flex-shrink-0" title="Copy token">
+                      {copied ? <Check className="w-5 h-5 text-green-400" /> : <Copy className="w-5 h-5 text-accent" />}
                     </button>
                   </div>
                 </div>
 
-                {/* Expiration */}
                 <div className="bg-white/5 rounded-xl p-4 mb-6 border border-white/10">
                   <p className="text-white/60 text-sm mb-1">Valid Until</p>
-                  <p className="text-white font-mono text-sm">
-                    {new Date(expiresAt).toLocaleString()}
-                  </p>
+                  <p className="text-white font-mono text-sm">{new Date(expiresAt).toLocaleString()}</p>
                 </div>
 
-                {/* Instructions */}
                 <div className="bg-accent/10 rounded-xl p-4 mb-6 border border-accent/30">
                   <p className="text-white text-sm font-semibold mb-3 flex items-center gap-2">
                     <span>📋</span> Next Steps:
@@ -253,9 +248,53 @@ export const Hero = () => {
           </div>
         </>
       )}
+
+      {/* 🔔 NOTIFICATION MODAL */}
+      {showNotification && notification && (
+        <>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50" onClick={closeNotification}></div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div className="relative max-w-md w-full pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="tech-card rounded-2xl p-8 backdrop-blur-md border border-accent/30 shadow-2xl bg-gradient-to-br from-primary/90 to-primary-dark/90">
+                <button onClick={closeNotification} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors group" aria-label="Close notification">
+                  <X className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" />
+                </button>
+
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center">
+                    <Bell className="w-8 h-8 text-accent" />
+                  </div>
+                </div>
+
+                <h2 className="text-3xl font-bold text-white text-center mb-4">
+                  {notification.title}
+                </h2>
+
+                <div className="bg-white/5 rounded-xl p-6 mb-6 border border-white/10">
+                  <p className="text-white/90 text-base leading-relaxed whitespace-pre-line">
+                    {notification.message}
+                  </p>
+                </div>
+
+                <p className="text-white/50 text-xs text-center mt-4">
+                  ✨ New feature • {new Date(notification.created_at).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
+
+
+
+
+
+
+
+
 
 
 
