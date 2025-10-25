@@ -9,9 +9,11 @@ export const DownloadSection = () => {
 
   // GitHub release download URLs
   const LINUX_URL =
-    "https://github.com/Boluex/techfix-frontend/releases/download/1.0/TechFIx.Agent.zip";
+    // "https://github.com/Boluex/techfix-frontend/releases/download/1.0/TechFIx.Agent.zip";
+    "https://techfixai-backend.onrender.com/download/agent/linux";
   const WINDOWS_URL =
-    "https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/TechFix_Agent_Windows.zip";
+    // "https://github.com/Boluex/techfix-frontend/releases/download/v1.0.0/TechFix_Agent_Windows.zip";
+    "https://techfixai-backend.onrender.com/download/agent/windows";
 
   // Track download analytics
   const trackDownload = async (platform: string) => {
