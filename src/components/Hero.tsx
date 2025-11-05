@@ -79,8 +79,6 @@ export const Hero = () => {
     setShowPaymentModal(true);
   };
 
-
-
   const initializeFlutterwave = async () => {
     if (!selectedPlan || !email) return;
 
@@ -88,10 +86,14 @@ export const Hero = () => {
     if (!plan) return;
 
     try {
-      // Call your backend to create payment link
-      const response = await fetch(`${API_ENDPOINT}/create-payment`, {
+      console.log("🚀 Calling backend:", `${API_ENDPOINT}/create-checkout-session`);
+      
+      const response = await fetch(`${API_ENDPOINT}/create-checkout-session`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
         body: JSON.stringify({
           email,
           plan: selectedPlan,
@@ -99,9 +101,20 @@ export const Hero = () => {
         }),
       });
 
-      const data = await response.json();
+      console.log("📥 Response status:", response.status);
 
-      if (response.ok && data.payment_link) {
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ Backend error:", errorText);
+        alert(`❌ Failed to initialize payment: ${response.status}`);
+        setShowPaymentModal(false);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("📦 Response data:", data);
+
+      if (data.redirect_url && data.tx_ref) {
         // Open Flutterwave hosted checkout in popup
         const width = 500;
         const height = 700;
@@ -114,6 +127,12 @@ export const Hero = () => {
           `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`
         );
 
+        if (!popup) {
+          alert("⚠️ Please allow popups for payment window");
+          setShowPaymentModal(false);
+          return;
+        }
+
         // Poll for payment completion
         const checkInterval = setInterval(() => {
           if (popup?.closed) {
@@ -122,11 +141,11 @@ export const Hero = () => {
           }
         }, 1000);
       } else {
-        alert(`❌ Failed to initialize payment: ${data.error || "Unknown error"}`);
+        alert(`❌ Failed to initialize payment: Invalid response`);
         setShowPaymentModal(false);
       }
     } catch (error) {
-      console.error("Error initializing payment:", error);
+      console.error("💥 Error initializing payment:", error);
       alert("❌ Payment setup failed. Please try again.");
       setShowPaymentModal(false);
     }
@@ -135,13 +154,19 @@ export const Hero = () => {
   const checkPaymentStatus = async (txRef: string) => {
     try {
       setIsLoading(true);
+      console.log("🔍 Verifying payment:", txRef);
+      
       const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
         body: JSON.stringify({ tx_ref: txRef }),
       });
 
       const data = await response.json();
+      console.log("✅ Verification result:", data);
 
       if (response.ok && data.status === "successful" && data.token) {
         setToken(data.token);
@@ -156,7 +181,7 @@ export const Hero = () => {
         setShowPaymentModal(false);
       }
     } catch (error) {
-      console.error("Error checking payment status:", error);
+      console.error("❌ Error checking payment status:", error);
       alert("❌ Could not verify payment. Please contact support.");
       setShowPaymentModal(false);
     } finally {
