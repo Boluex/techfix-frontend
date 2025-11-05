@@ -89,7 +89,7 @@ export const Hero = () => {
 
     try {
       // Call your backend to create payment link
-      const response = await fetch(`${API_ENDPOINT}/create-checkout-session`, {
+      const response = await fetch(`${API_ENDPOINT}/create-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -109,7 +109,7 @@ export const Hero = () => {
         const top = (window.innerHeight - height) / 2;
         
         const popup = window.open(
-          data.payment_link,
+          data.redirect_url,
           'flutterwave-payment',
           `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`
         );
