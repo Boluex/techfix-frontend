@@ -89,7 +89,7 @@ export const Hero = () => {
 
     try {
       // Call your backend to create payment link
-      const response = await fetch(`${API_ENDPOINT}/create-payment`, {
+      const response = await fetch(`${API_ENDPOINT}/create-checkout-session`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
