@@ -79,90 +79,94 @@ export const Hero = () => {
     setShowPaymentModal(true);
   };
 
-  const handlePaymentSuccess = async (transactionId: string) => {
-    try {
-      setIsLoading(true);
-      // Verify payment and generate token
-      const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          plan: selectedPlan,
-          transaction_id: transactionId
-        }),
-      });
 
-      const data = await response.json();
 
-      if (response.ok && data.token) {
-        setToken(data.token);
-        setExpiresAt(data.expires_at);
-        setShowPaymentModal(false);
-        setShowTokenModal(true);
-      } else {
-        alert(`❌ Payment verification failed: ${data.error || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Error verifying payment:", error);
-      alert("❌ Something went wrong. Please contact support.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const initializeFlutterwave = () => {
+  const initializeFlutterwave = async () => {
     if (!selectedPlan || !email) return;
 
     const plan = plans.find(p => p.id === selectedPlan);
     if (!plan) return;
 
-    // @ts-ignore - FlutterwaveCheckout is loaded via CDN
-    const FlutterwaveCheckout = window.FlutterwaveCheckout;
-    
-    FlutterwaveCheckout({
-      public_key: import.meta.env.VITE_FLUTTERWAVE_PUBLIC_KEY || "FLWPUBK-xxxxx",
-      tx_ref: `TECH-${Date.now()}`,
-      amount: plan.price,
-      currency: "USD",
-      payment_options: "card,ussd,banktransfer",
-      customer: {
-        email: email,
-        name: email.split("@")[0],
-      },
-      customizations: {
-        title: "TechFix AI",
-        description: plan.name,
-        logo: "https://your-logo-url.com/logo.png",
-      },
-      callback: function(data: any) {
-        console.log("Payment callback:", data);
-        if (data.status === "successful") {
-          handlePaymentSuccess(data.transaction_id);
-        } else {
-          alert("❌ Payment was not completed. Please try again.");
-        }
-      },
-      onclose: function() {
-        console.log("Payment modal closed");
-      },
-    });
+    try {
+      // Call your backend to create payment link
+      const response = await fetch(`${API_ENDPOINT}/create-payment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          plan: selectedPlan,
+          amount: plan.price,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.payment_link) {
+        // Open Flutterwave hosted checkout in popup
+        const width = 500;
+        const height = 700;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+        
+        const popup = window.open(
+          data.payment_link,
+          'flutterwave-payment',
+          `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`
+        );
+
+        // Poll for payment completion
+        const checkInterval = setInterval(() => {
+          if (popup?.closed) {
+            clearInterval(checkInterval);
+            checkPaymentStatus(data.tx_ref);
+          }
+        }, 1000);
+      } else {
+        alert(`❌ Failed to initialize payment: ${data.error || "Unknown error"}`);
+        setShowPaymentModal(false);
+      }
+    } catch (error) {
+      console.error("Error initializing payment:", error);
+      alert("❌ Payment setup failed. Please try again.");
+      setShowPaymentModal(false);
+    }
+  };
+
+  const checkPaymentStatus = async (txRef: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tx_ref: txRef }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === "successful" && data.token) {
+        setToken(data.token);
+        setExpiresAt(data.expires_at);
+        setShowPaymentModal(false);
+        setShowTokenModal(true);
+      } else if (data.status === "pending") {
+        alert("⏳ Payment is still processing. Please check your email for confirmation.");
+        setShowPaymentModal(false);
+      } else {
+        alert("❌ Payment was not completed. Please try again.");
+        setShowPaymentModal(false);
+      }
+    } catch (error) {
+      console.error("Error checking payment status:", error);
+      alert("❌ Could not verify payment. Please contact support.");
+      setShowPaymentModal(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     if (showPaymentModal && selectedPlan) {
-      // Load Flutterwave script
-      const script = document.createElement("script");
-      script.src = "https://checkout.flutterwave.com/v3.js";
-      script.async = true;
-      script.onload = () => {
-        setTimeout(initializeFlutterwave, 500);
-      };
-      document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script);
-      };
+      initializeFlutterwave();
     }
   }, [showPaymentModal, selectedPlan]);
 
@@ -453,7 +457,6 @@ export const Hero = () => {
     </div>
   );
 };
-
 
 
 
