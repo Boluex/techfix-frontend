@@ -46,6 +46,35 @@ export const Hero = () => {
     }
   ];
 
+  // Check for payment success from URL on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const txRef = urlParams.get('tx_ref') || urlParams.get('transaction_id');
+    
+    if (status === 'successful' && txRef) {
+      console.log("✅ Payment redirect detected, verifying:", txRef);
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+      // Verify payment
+      setShowPaymentModal(true);
+      checkPaymentStatus(txRef);
+    } else if (status === 'cancelled') {
+      console.log("❌ Payment cancelled");
+      alert("❌ Payment was cancelled. Please try again.");
+    }
+  }, []);
+
+  // Check for pending payment on mount (in case user refreshed)
+  useEffect(() => {
+    const pendingTxRef = window.sessionStorage.getItem('pending_tx_ref');
+    if (pendingTxRef) {
+      console.log("🔄 Found pending payment, verifying:", pendingTxRef);
+      setShowPaymentModal(true);
+      checkPaymentStatus(pendingTxRef);
+    }
+  }, []);
+
   // Fetch notification on mount
   useEffect(() => {
     const fetchNotification = async () => {
@@ -161,6 +190,7 @@ export const Hero = () => {
   const checkPaymentStatus = async (txRef: string) => {
     try {
       setIsLoading(true);
+      setShowPaymentModal(true); // Keep modal visible while checking
       console.log("🔍 Verifying payment:", txRef);
       
       const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
@@ -172,24 +202,39 @@ export const Hero = () => {
         body: JSON.stringify({ tx_ref: txRef }),
       });
 
+      console.log("📥 Verification response status:", response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ Verification error:", errorText);
+        alert("❌ Could not verify payment. Please contact support with reference: " + txRef);
+        setShowPaymentModal(false);
+        return;
+      }
+
       const data = await response.json();
       console.log("✅ Verification result:", data);
 
-      if (response.ok && data.status === "successful" && data.token) {
+      if (data.status === "successful" && data.token) {
+        console.log("🎉 Payment verified! Token:", data.token);
         setToken(data.token);
         setExpiresAt(data.expires_at);
         setShowPaymentModal(false);
         setShowTokenModal(true);
+        // Clear pending reference
+        window.sessionStorage.removeItem('pending_tx_ref');
       } else if (data.status === "pending") {
-        alert("⏳ Payment is still processing. Please check your email for confirmation.");
+        console.log("⏳ Payment still pending");
+        alert("⏳ Payment is still processing. Please check your email for confirmation or contact support.");
         setShowPaymentModal(false);
       } else {
-        alert("❌ Payment was not completed. Please try again.");
+        console.log("❌ Payment not successful:", data.status);
+        alert("❌ Payment was not completed. Please try again or contact support.");
         setShowPaymentModal(false);
       }
     } catch (error) {
-      console.error("❌ Error checking payment status:", error);
-      alert("❌ Could not verify payment. Please contact support.");
+      console.error("💥 Error checking payment status:", error);
+      alert("❌ Could not verify payment. Please contact support with your payment confirmation email.");
       setShowPaymentModal(false);
     } finally {
       setIsLoading(false);
@@ -372,9 +417,14 @@ export const Hero = () => {
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-white text-center mb-4">Processing Payment</h2>
+                <h2 className="text-2xl font-bold text-white text-center mb-4">
+                  {isLoading ? "Verifying Payment..." : "Processing Payment"}
+                </h2>
                 <p className="text-white/70 text-center mb-6">
-                  Complete your payment in the Flutterwave checkout window
+                  {isLoading 
+                    ? "Please wait while we confirm your payment..." 
+                    : "Complete your payment in the Flutterwave checkout window"
+                  }
                 </p>
 
                 <div className="bg-cyan-500/10 rounded-xl p-4 border border-cyan-500/30 mb-6">
@@ -489,6 +539,9 @@ export const Hero = () => {
     </div>
   );
 };
+
+
+
 
 
 
@@ -641,11 +694,18 @@ export const Hero = () => {
 //           return;
 //         }
 
+//         // Store tx_ref for verification
+//         window.sessionStorage.setItem('pending_tx_ref', data.tx_ref);
+        
 //         // Poll for payment completion
 //         const checkInterval = setInterval(() => {
 //           if (popup?.closed) {
 //             clearInterval(checkInterval);
-//             checkPaymentStatus(data.tx_ref);
+//             console.log("💳 Payment popup closed, verifying...");
+//             // Small delay to ensure payment processed
+//             setTimeout(() => {
+//               checkPaymentStatus(data.tx_ref);
+//             }, 2000);
 //           }
 //         }, 1000);
 //       } else {
@@ -990,6 +1050,10 @@ export const Hero = () => {
 //     </div>
 //   );
 // };
+
+
+
+
 
 
 
