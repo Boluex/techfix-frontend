@@ -11,7 +11,7 @@ export const Footer = () => {
               <Monitor className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="font-bold text-lg text-foreground">TechFix AI</div>
+              <div className="font-bold text-lg text-foreground">TechFix Repair Agent</div>
               <div className="text-sm text-muted-foreground">AI-Powered Tech Repair</div>
             </div>
           </div>
