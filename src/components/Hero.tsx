@@ -673,6 +673,63 @@ Response time: Within 24 hours on business days`
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none overflow-y-auto">
             <div className="relative max-w-5xl w-full pointer-events-auto my-8" onClick={(e) => e.stopPropagation()}>
               <div className="backdrop-blur-md bg-slate-900/95 rounded-2xl p-8 border border-cyan-500/30 shadow-2xl">
+                <button onClick={() => setShowPlanModal(false)} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors group">
+                  <X className="w-5 h-5 text-white/60 group-hover:text-white" />
+                </button>
+
+                <h2 className="text-3xl font-bold text-white text-center mb-3">Choose Your Plan</h2>
+                <p className="text-white/70 text-center mb-8">Select the perfect plan for your needs</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {plans.map((plan) => (
+                    <div
+                      key={plan.id}
+                      className={`relative backdrop-blur-sm bg-white/5 rounded-xl p-6 border-2 transition-all cursor-pointer hover:scale-105 ${
+                        plan.popular ? 'border-cyan-400' : 'border-white/10 hover:border-white/30'
+                      }`}
+                      onClick={() => handlePlanSelect(plan.id as any)}
+                    >
+                      {plan.popular && (
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                          POPULAR
+                        </div>
+                      )}
+                      
+                      <h3 className="font-bold text-xl text-white mb-2">{plan.name}</h3>
+                      <p className="text-white/60 text-sm mb-4">{plan.description}</p>
+                      
+                      <div className="mb-6">
+                        <span className="text-5xl font-bold text-cyan-400">${plan.price}</span>
+                      </div>
+
+                      <ul className="space-y-3 mb-6">
+                        {plan.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-white/80 text-sm">
+                            <Check className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <Button className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600">
+                        Select Plan
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* PAYMENT PROCESSING MODAL */}
+      {showPaymentModal && (
+        <>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"></div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none overflow-y-auto">
+            <div className="relative max-w-md w-full pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="backdrop-blur-md bg-slate-900/95 rounded-2xl p-8 border border-cyan-500/30 shadow-2xl">
                 <div className="flex justify-center mb-6">
                   <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-400 flex items-center justify-center animate-pulse">
                     <CreditCard className="w-8 h-8 text-cyan-400" />
@@ -801,65 +858,6 @@ Response time: Within 24 hours on business days`
     </div>
   );
 };
-                <button onClick={() => setShowPlanModal(false)} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors group">
-                  <X className="w-5 h-5 text-white/60 group-hover:text-white" />
-                </button>
-
-                <h2 className="text-3xl font-bold text-white text-center mb-3">Choose Your Plan</h2>
-                <p className="text-white/70 text-center mb-8">Select the perfect plan for your needs</p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {plans.map((plan) => (
-                    <div
-                      key={plan.id}
-                      className={`relative backdrop-blur-sm bg-white/5 rounded-xl p-6 border-2 transition-all cursor-pointer hover:scale-105 ${
-                        plan.popular ? 'border-cyan-400' : 'border-white/10 hover:border-white/30'
-                      }`}
-                      onClick={() => handlePlanSelect(plan.id as any)}
-                    >
-                      {plan.popular && (
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                          POPULAR
-                        </div>
-                      )}
-                      
-                      <h3 className="font-bold text-xl text-white mb-2">{plan.name}</h3>
-                      <p className="text-white/60 text-sm mb-4">{plan.description}</p>
-                      
-                      <div className="mb-6">
-                        <span className="text-5xl font-bold text-cyan-400">${plan.price}</span>
-                      </div>
-
-                      <ul className="space-y-3 mb-6">
-                        {plan.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-white/80 text-sm">
-                            <Check className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <Button className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600">
-                        Select Plan
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* PAYMENT PROCESSING MODAL */}
-      {showPaymentModal && (
-        <>
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"></div>
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <div className="relative max-w-md w-full pointer-events-auto">
-              <div className="backdrop-blur-md bg-slate-900/95 rounded-2xl p-8 border border-cyan-500/30 shadow-2xl">
-
-
 
 
 
