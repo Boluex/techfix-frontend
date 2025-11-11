@@ -19,7 +19,7 @@ export const Footer = () => {
           {/* Copyright */}
           <div className="text-center md:text-right">
             <p className="text-muted-foreground text-sm">
-              &copy; 2025 TechFix AI. All rights reserved.
+              &copy; 2025 TechFix repair agent
             </p>
             <p className="text-muted-foreground text-xs mt-1">
               Secure • Fast • Reliable Tech Support
