@@ -16,12 +16,12 @@ export const FAQ = () => {
       answer: "Absolutely. Your security is our top priority. Every action our AI agent wants to perform requires your explicit approval through UAC (Windows) or sudo (Linux) prompts. You maintain complete control over your system at all times."
     },
     {
-      question: "When do I need to use Chrome Remote Desktop?",
-      answer: "Only if our AI can't automatically resolve your issue within the 30-minute AI session. In such cases, we'll guide you through opening Chrome Remote Desktop so our human experts can provide direct assistance during the remaining 15 minutes."
+      question: "When do I need to use AnyDesk?",
+      answer: "Only if our AI can't automatically resolve your issue within the 30-minute AI session. In such cases, we'll guide you through opening AnyDesk Remote Desktop so our human experts can provide direct assistance during the remaining minutes."
     },
     {
       question: "What types of issues can TechFix AI resolve?",
-      answer: "Our AI specializes in software-related issues including system errors, application crashes, performance problems, configuration issues, driver problems, and software conflicts. We handle both Windows and Linux systems effectively."
+      answer: "Our AI specializes in software-related issues including system errors, application crashes, performance problems, configuration issues, driver problems,application issues, and software conflicts. We handle both Windows and Linux systems effectively."
     },
     {
       question: "How does the 45-minute session work?",
@@ -37,11 +37,11 @@ export const FAQ = () => {
     },
     {
       question: "Can I use TechFix AI on multiple computers?",
-      answer: "Each $5 session token is valid for one computer and one 45-minute session. If you need help with multiple computers, you'll need separate tokens for each system. However, you can use the same email address for multiple sessions."
+      answer: "Each session token is valid for one computer and one 45-minute session. If you need help with multiple computers, you'll need separate tokens for each system. However, you can use the same email address for multiple sessions."
     },
     {
       question: "What if I'm not satisfied with the service?",
-      answer: "We stand behind our service. If we can't make meaningful progress on your issue during the session, we offer a full refund. Our goal is to solve your tech problems efficiently and effectively."
+      answer: "We stand behind our service. If we can't make meaningful progress on your issue during the session, send us a feed back here <a>https://tally.so/r/mR7ydj</a> . Our goal is to solve your tech problems efficiently and effectively."
     },
     {
       question: "Do you support macOS?",
