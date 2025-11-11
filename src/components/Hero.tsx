@@ -288,7 +288,7 @@ export const Hero = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-6">
               <Monitor className="w-8 h-8 text-cyan-400 animate-pulse" />
-              <span className="text-xl font-bold text-white/90 font-mono">TechFix AI</span>
+              <span className="text-xl font-bold text-white/90 font-mono">TechFix Repair Agent</span>
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
