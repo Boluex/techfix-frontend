@@ -30,7 +30,7 @@ export const Features = () => {
     {
       icon: Clock,
       title: "45-Minute Sessions",
-      description: "30 minutes of AI repair + 15 minutes of human expert support. Fair pricing at just $0 per session.",
+      description: "30 minutes of AI repair + 15 minutes of human expert support. Fair pricing per session.",
       color: "text-primary"
     },
     {
