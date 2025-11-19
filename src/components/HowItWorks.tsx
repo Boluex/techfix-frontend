@@ -35,7 +35,7 @@ export const HowItWorks = () => {
       icon: Users,
       step: "05",
       title: "Human Expert (If Needed)",
-      description: "If the AI can't resolve the issue, we'll guide you to open Chrome Remote Desktop for direct expert assistance.",
+      description: "If the AI can't resolve the issue, we'll guide you to open AnyDesk Remote Desktop for direct expert assistance.",
       color: "bg-gradient-to-br from-primary/20 to-primary/10"
     }
   ];
