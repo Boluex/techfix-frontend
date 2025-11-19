@@ -7,7 +7,7 @@ export const HowItWorks = () => {
       icon: CreditCard,
       step: "01",
       title: "Pay & Get Token",
-      description: "Enter your email and pay $0 to generate your unique 8-digit service token (e.g., ABCD-EFGH). Valid for 45 minutes.",
+      description: "Enter your email and pay to generate your unique 8-digit service token (e.g., ABCD-EFGH). Valid for 45 minutes.",
       color: "bg-gradient-to-br from-primary/20 to-primary/10"
     },
     {
