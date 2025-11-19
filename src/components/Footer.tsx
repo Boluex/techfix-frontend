@@ -173,7 +173,7 @@ Refunds are not available for:
 2. REFUND PROCESS
 
 2.1 How to Request
-- Email: refunds@techfix.com
+- Email: oladejiolaoluwa46@gmail.com
 - Subject: Refund Request - [Token Number]
 - Include: Purchase date, email, reason for refund
 
@@ -217,8 +217,8 @@ We handle exceptions on a case-by-case basis for:
 - Verified technical failures
 
 8. CONTACT FOR REFUNDS
-Email: refunds@techfix.com
-Phone: +234 123 456 7890
+Email: oladejiolaoluwa46@gmail.com
+Phone: +234 9030903109
 Address: 123 Tech Street, Lagos, Nigeria
 
 Response time: Within 24 hours on business days`
@@ -255,18 +255,18 @@ Response time: Within 24 hours on business days`
               <div className="space-y-3">
                 <div className="flex items-start gap-2 text-xs text-muted-foreground">
                   <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span>123 Tech Street, Lagos, Nigeria</span>
+                  <span>21 Joseph Alli street Street, Lagos, Nigeria</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Mail className="w-4 h-4 flex-shrink-0" />
-                  <a href="mailto:support@techfix.com" className="hover:text-foreground transition-colors">
-                    support@techfix.com
+                  <a href="mailto:oladejiolaoluwa46@gmail.com" className="hover:text-foreground transition-colors">
+                    oladejiolaoluwa46@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Phone className="w-4 h-4 flex-shrink-0" />
-                  <a href="tel:+2341234567890" className="hover:text-foreground transition-colors">
-                    +234 123 456 7890
+                  <a href="tel:+2349030903109" className="hover:text-foreground transition-colors">
+                    +2349030903109
                   </a>
                 </div>
               </div>
