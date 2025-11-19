@@ -1,4 +1,4 @@
-import { useState } from "react";
+eimport { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download } from "lucide-react";
@@ -194,7 +194,7 @@ export const DownloadSection = () => {
 
             <div className="mt-6 p-4 bg-yellow-50/50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
-                <a href="https://tally.so/r/mR7ydj" >Send us a feedback over here </a>
+                Send us a feedback over here <a href="https://tally.so/r/mR7ydj" ><b>CLICK HERE</b></a>
               </p>
             </div>
             <a></a>
