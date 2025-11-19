@@ -75,9 +75,9 @@ These terms are governed by the laws of Nigeria.
 
 10. CONTACT
 For questions about these terms:
-Email: support@techfix.com
-Phone: +234 123 456 7890
-Address: 123 Tech Street, Lagos, Nigeria`
+Email: oladejiolaoluwa46@gmail.com
+Phone: +234 9030903109
+Address: 21 joseph Alli Street,Ikorodu , Lagos, Nigeria`
         };
       case 'privacy':
         return {
