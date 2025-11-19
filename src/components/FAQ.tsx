@@ -41,7 +41,7 @@ export const FAQ = () => {
     },
     {
       question: "What if I'm not satisfied with the service?",
-      answer: "We stand behind our service. If we can't make meaningful progress on your issue during the session, send us a feed back here <a>https://tally.so/r/mR7ydj</a> . Our goal is to solve your tech problems efficiently and effectively."
+      answer: "We stand behind our service. If we can't make meaningful progress on your issue during the session, kindly send us a feedback. Our goal is to solve your tech problems efficiently and effectively."
     },
     {
       question: "Do you support macOS?",
