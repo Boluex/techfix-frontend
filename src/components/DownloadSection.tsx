@@ -194,10 +194,10 @@ export const DownloadSection = () => {
 
             <div className="mt-6 p-4 bg-yellow-50/50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
-                💡 Send us a feedback over here 
+                <a href="https://tally.so/r/mR7ydj" >Send us a feedback over here </a>
               </p>
             </div>
-            <a>https://tally.so/r/mR7ydj</a>
+            <a></a>
           </div>
 
           {/* Right side - Image */}
