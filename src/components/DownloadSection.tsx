@@ -196,8 +196,8 @@ export const DownloadSection = () => {
               <p className="text-sm text-yellow-800">
                 💡 Send us a feedback over here 
               </p>
-              <a>https://tally.so/r/mR7ydj</a>
             </div>
+            <a>https://tally.so/r/mR7ydj</a>
           </div>
 
           {/* Right side - Image */}
