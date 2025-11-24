@@ -219,7 +219,7 @@ We handle exceptions on a case-by-case basis for:
 8. CONTACT FOR REFUNDS
 Email: oladejiolaoluwa46@gmail.com
 Phone: +234 9030903109
-Address: 123 Tech Street, Lagos, Nigeria
+Address: 24 alli street ikorodu lagos
 
 Response time: Within 24 hours on business days`
         };
@@ -255,7 +255,7 @@ Response time: Within 24 hours on business days`
               <div className="space-y-3">
                 <div className="flex items-start gap-2 text-xs text-muted-foreground">
                   <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span>21 Joseph Alli street, Lagos, Nigeria</span>
+                  <span> 24 alli street ikorodu lagos</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Mail className="w-4 h-4 flex-shrink-0" />
