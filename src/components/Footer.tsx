@@ -138,9 +138,8 @@ We may update this policy and will notify users of significant changes.
 
 11. CONTACT US
 For privacy concerns:
-Email: privacy@techfix.com
-Phone: +234 123 456 7890
-Address: 123 Tech Street, Lagos, Nigeria`
+Email: codepreneurs12@gmail.com
+`
         };
       case 'refund':
         return {
@@ -217,9 +216,7 @@ We handle exceptions on a case-by-case basis for:
 - Verified technical failures
 
 8. CONTACT FOR REFUNDS
-Email: oladejiolaoluwa46@gmail.com
-Phone: +234 9030903109
-Address: 24 alli street ikorodu lagos
+Email: codepreneurs12@gmail.com
 
 Response time: Within 24 hours on business days`
         };
