@@ -350,9 +350,8 @@ These terms are governed by the laws of Nigeria.
 
 10. CONTACT
 For questions about these terms:
-Email: support@techfix.com
-Phone: +234 123 456 7890
-Address: 123 Tech Street, Lagos, Nigeria`
+Email: codepreneurs12@gmail.com
+`
         };
       case 'privacy':
         return {
@@ -413,9 +412,8 @@ We may update this policy and will notify users of significant changes.
 
 11. CONTACT US
 For privacy concerns:
-Email: privacy@techfix.com
-Phone: +234 123 456 7890
-Address: 123 Tech Street, Lagos, Nigeria`
+Email: codepreneurs12@gmail.com
+`
         };
       case 'refund':
         return {
@@ -448,7 +446,7 @@ Refunds are not available for:
 2. REFUND PROCESS
 
 2.1 How to Request
-- Email: refunds@techfix.com
+- Email: codepreneurs12@gmail.com
 - Subject: Refund Request - [Token Number]
 - Include: Purchase date, email, reason for refund
 
@@ -469,7 +467,7 @@ Refunds are not available for:
 
 4. DISPUTED CHARGES
 If you notice an unauthorized charge:
-- Contact us immediately at support@techfix.com
+- Contact us immediately at codepreneurs12@gmail.com
 - We will investigate and resolve within 48 hours
 - Fraudulent charges will be fully refunded
 
@@ -492,9 +490,8 @@ We handle exceptions on a case-by-case basis for:
 - Verified technical failures
 
 8. CONTACT FOR REFUNDS
-Email: refunds@techfix.com
-Phone: +234 123 456 7890
-Address: 123 Tech Street, Lagos, Nigeria
+Email: codepreneurs12@gmail.com
+
 
 Response time: Within 24 hours on business days`
         };
