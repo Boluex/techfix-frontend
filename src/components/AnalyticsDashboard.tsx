@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { TrendingUp, Zap, AlertCircle, Download, Users, Clock, RefreshCw, AlertTriangle } from 'lucide-react';
 
 interface AnalyticsData {
+  unique_visitors: number; 
   tokens_generated: number;
   ai_requests: number;
   agent_downloads: number;
@@ -154,6 +155,15 @@ const AnalyticsDashboard = () => {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+
+          <StatCard
+            icon={Globe}  
+            title="Unique Visitors"
+            value={analytics?.unique_visitors || 0}
+            subtitle="Different IP addresses"
+            color="text-orange-400"
+          />
+
           <StatCard
             icon={Users}
             title="Tokens Generated"
