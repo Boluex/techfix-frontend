@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TrendingUp, Zap, AlertCircle, Download, Users, Clock, RefreshCw, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Zap, AlertCircle, Download, Users, Clock, Globe, RefreshCw, AlertTriangle } from 'lucide-react';
 
 interface AnalyticsData {
   unique_visitors: number; 
