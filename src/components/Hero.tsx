@@ -64,8 +64,8 @@ export const Hero = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const status = urlParams.get('status');
-    const txRef = urlParams.get('reference') || urlParams.get('tx_ref') || urlParams.get('transaction_id');
-    // const txRef = urlParams.get('tx_ref') || urlParams.get('transaction_id');
+    // const txRef = urlParams.get('reference') || urlParams.get('tx_ref') || urlParams.get('transaction_id');
+    const txRef = urlParams.get('tx_ref') || urlParams.get('transaction_id');
     
     if (status === 'successful' && txRef) {
       console.log("✅ Payment redirect detected, verifying:", txRef);
