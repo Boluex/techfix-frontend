@@ -211,58 +211,99 @@ export const Hero = () => {
     }
   };
 
-  const checkPaymentStatus = async (txRef: string) => {
-    try {
-      setIsLoading(true);
-      setShowPaymentModal(true);
-      console.log("🔍 Verifying payment:", txRef);
+  // const checkPaymentStatus = async (txRef: string) => {
+  //   try {
+  //     setIsLoading(true);
+  //     setShowPaymentModal(true);
+  //     console.log("🔍 Verifying payment:", txRef);
       
-      const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({ tx_ref: txRef }),
-      });
+  //     const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
+  //       method: "POST",
+  //       headers: { 
+  //         "Content-Type": "application/json",
+  //         "Accept": "application/json"
+  //       },
+  //       body: JSON.stringify({ tx_ref: txRef }),
+  //     });
 
-      console.log("📥 Verification response status:", response.status);
+  //     console.log("📥 Verification response status:", response.status);
       
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("❌ Verification error:", errorText);
-        alert("❌ Could not verify payment. Please contact support with reference: " + txRef);
-        setShowPaymentModal(false);
-        return;
-      }
+  //     if (!response.ok) {
+  //       const errorText = await response.text();
+  //       console.error("❌ Verification error:", errorText);
+  //       alert("❌ Could not verify payment. Please contact support with reference: " + txRef);
+  //       setShowPaymentModal(false);
+  //       return;
+  //     }
 
-      const data = await response.json();
-      console.log("✅ Verification result:", data);
+  //     const data = await response.json();
+  //     console.log("✅ Verification result:", data);
 
-      if (data.status === "successful" && data.token) {
-        console.log("🎉 Payment verified! Token:", data.token);
-        setToken(data.token);
-        setExpiresAt(data.expires_at);
-        setShowPaymentModal(false);
-        setShowTokenModal(true);
-        window.sessionStorage.removeItem('pending_tx_ref');
-      } else if (data.status === "pending") {
-        console.log("⏳ Payment still pending");
-        alert("⏳ Payment is still processing. Please check your email for confirmation or contact support.");
-        setShowPaymentModal(false);
-      } else {
-        console.log("❌ Payment not successful:", data.status);
-        alert("❌ Payment was not completed. Please try again or contact support.");
-        setShowPaymentModal(false);
-      }
-    } catch (error) {
-      console.error("💥 Error checking payment status:", error);
-      alert("❌ Could not verify payment. Please contact support with your payment confirmation email.");
+  //     if (data.status === "successful" && data.token) {
+  //       console.log("🎉 Payment verified! Token:", data.token);
+  //       setToken(data.token);
+  //       setExpiresAt(data.expires_at);
+  //       setShowPaymentModal(false);
+  //       setShowTokenModal(true);
+  //       window.sessionStorage.removeItem('pending_tx_ref');
+  //     } else if (data.status === "pending") {
+  //       console.log("⏳ Payment still pending");
+  //       alert("⏳ Payment is still processing. Please check your email for confirmation or contact support.");
+  //       setShowPaymentModal(false);
+  //     } else {
+  //       console.log("❌ Payment not successful:", data.status);
+  //       alert("❌ Payment was not completed. Please try again or contact support.");
+  //       setShowPaymentModal(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("💥 Error checking payment status:", error);
+  //     alert("❌ Could not verify payment. Please contact support with your payment confirmation email.");
+  //     setShowPaymentModal(false);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+
+  const checkPaymentStatus = async (txRef: string, retries = 3) => {
+  try {
+    setIsLoading(true);
+    setShowPaymentModal(true);
+
+    const response = await fetch(`${API_ENDPOINT}/verify-payment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ tx_ref: txRef }),
+    });
+
+    const data = await response.json();
+
+    if (data.status === "successful" && data.token) {
+      setToken(data.token);
+      setExpiresAt(data.expires_at);
       setShowPaymentModal(false);
-    } finally {
+      setShowTokenModal(true);
+      window.sessionStorage.removeItem('pending_tx_ref');
+      setIsLoading(false);
+    } else if (retries > 0) {
+      // Not ready yet — wait 3 seconds and try again
+      console.log(`Payment not ready, retrying in 3s... (${retries} attempts left)`);
+      setTimeout(() => checkPaymentStatus(txRef, retries - 1), 3000);
+    } else {
+      alert("❌ Payment could not be verified. Contact support with ref: " + txRef);
+      setShowPaymentModal(false);
       setIsLoading(false);
     }
-  };
+  } catch (error) {
+    if (retries > 0) {
+      setTimeout(() => checkPaymentStatus(txRef, retries - 1), 3000);
+    } else {
+      alert("❌ Could not verify payment. Please contact support.");
+      setShowPaymentModal(false);
+      setIsLoading(false);
+    }
+  }
+};
 
   useEffect(() => {
     if (showPaymentModal && selectedPlan && email) {
